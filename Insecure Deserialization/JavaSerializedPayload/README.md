@@ -1,0 +1,1 @@
+Must remain the file structure just like in the source code found in the lab to make the serialized object.

