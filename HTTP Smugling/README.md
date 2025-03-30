@@ -87,7 +87,7 @@ Send the `GET / HTTP/2` request to Repeater. Change request method and protocol 
 
     x=1
 
-Use `HTTP Request Smuggler` to convert it to chunked. Fix the CL header so that the body only contains everythign before the `GPOST`. The request should now look like this:
+Use `HTTP Request Smuggler` to convert it to chunked. Fix the CL header so that the body only contains everything before the `GPOST`. The request should now look like this:
 
     POST / HTTP/1.1
     Content-Type: application/x-www-form-urlencoded
