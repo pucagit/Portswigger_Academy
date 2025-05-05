@@ -280,28 +280,28 @@ Resend it to make cache server store it and submit this URL to the victim:
 Even with the URL encoding, the normalization makes it appears to be the same cache key and the victim will be served with our malicious response.
 
 ### LAB: Cache key injection
-- The `/login` page **redirects** users based on the `lang` parameter.
-- The regex used to filter query parameters **ignores `utm_content`**, allowing an attacker to **append unkeyed parameters** after `lang`:
+The `/login` page **redirects** users based on the `lang` parameter.
+The regex used to filter query parameters **ignores `utm_content`**, allowing an attacker to **append unkeyed parameters** after `lang`:
   ```
   /login?lang=en?utm_content=anything
   ```
-  - This means the **cache key does not include everything after the second `?`**, allowing **injection of additional parameters**.
-- The `/login/` page imports a localization script:
+  This means the **cache key does not include everything after the second `?`**, allowing **injection of additional parameters**.
+The `/login/` page imports a localization script:
   ```
   <script src="/js/localize.js?lang=en"></script>
   ```
-- However, it **does not URL-encode** the `lang` parameter.
-- This means the script URL can be **polluted** with additional parameters via:
+However, it **does not URL-encode** the `lang` parameter.
+This means the script URL can be **polluted** with additional parameters via:
   ```
   /js/localize.js?lang=en?utm_content=anything
   ```
-- The browser will interpret `?utm_content=anything` as **part of the `lang` value**, causing it to be included in the request **without proper encoding**.
-- The `/js/localize.js` endpoint has an issue where, if `cors=1`, it improperly **reflects the `Origin` header** into the response headers **without validation**.
-- This allows an attacker to inject headers by **URL-encoding CRLF characters (`%0d%0a`)**, which represents **newline characters**:
+The browser will interpret `?utm_content=anything` as **part of the `lang` value**, causing it to be included in the request **without proper encoding**.
+The `/js/localize.js` endpoint has an issue where, if `cors=1`, it improperly **reflects the `Origin` header** into the response headers **without validation**.
+This allows an attacker to inject headers by **URL-encoding CRLF characters (`%0d%0a`)**, which represents **newline characters**:
   ```
   Origin: x%0d%0aContent-Length:%208%0d%0a%0d%0aalert(1)$$$$
   ```
-  - This injects a **fake `Content-Length` header**, followed by **JavaScript payload** (`alert(1)`):
+  This injects a **fake `Content-Length` header**, followed by **JavaScript payload** (`alert(1)`):
   ```
   Origin: x
   Content-Length: 8

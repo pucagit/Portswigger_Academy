@@ -77,3 +77,14 @@ The server checks for the signature of a file. Use `hexedit` to modify the heade
     <?php echo file_get_contents('/home/carlos/secret') ?>
 
 Successfully upload the file and visit the avatar URL to retrieve the secret.
+
+### LAB: Web shell upload via race condition
+Upload a normal JPG file and observe that we can access it via:
+
+    GET /files/avatars/test.jpg HTTP/2
+
+Upload the `test.php` file. Send that request to Repeater. Change the previous request to:
+
+    GET /files/avatars/test.php HTTP/2
+
+Group the 2 tabs into a group (might need to duplicate the second request several times). Now send the group in parallel. Notice in 1 of the `GET /files/avatars/test.php` request, there is a response with Carlos' secret. Submit it to solve the lab.

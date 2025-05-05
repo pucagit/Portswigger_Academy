@@ -92,6 +92,7 @@ Now send the delete user request to successfully delete user Carlos:
     csrf=PGU6qglOQEUM9zLMBek6gi355yHPkkCH&username=carlos
 
 ### LAB: Host validation bypass via connection state attack
+[link](https://portswigger.net/research/browser-powered-desync-attacks#state)
 Send the `GET / HTTP/1.1` to Repeater. Duplicate the request and modify it to:
 
     GET /admin HTTP/1.1
@@ -105,14 +106,3 @@ Group the 2 tabs and `Send in sequence (single connection)`. Notice the admin in
     csrf=ibqNTHzoorRrNKoUlOPGHLrqcNoezrE0&username=carlos
 
 Resend the group to successfully delete user Carlos.
-
-### LAB: Web shell upload via race condition
-Upload a normal JPG file and observe that we can access it via:
-
-    GET /files/avatars/test.jpg HTTP/2
-
-Upload the `test.php` file. Send that request to Repeater. Change the previous request to:
-
-    GET /files/avatars/test.php HTTP/2
-
-Group the 2 tabs into a group (might need to duplicate the second request several times). Now send the group in parallel. Notice in 1 of the `GET /files/avatars/test.php` request, there is a response with Carlos' secret. Submit it to solve the lab.
